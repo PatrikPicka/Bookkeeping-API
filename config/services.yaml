@@ -1,0 +1,18 @@
+parameters:
+    mongodb_url: '%env(MONGODB_URL)%'
+    mongodb_db: '%env(MONGODB_DB)%'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Document/'
+            - '../src/Kernel.php'
+
+    App\Stage\WriteStage:
+        decorates: api_platform.graphql.resolver.stage.write

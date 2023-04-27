@@ -1,0 +1,25 @@
+api_platform:
+  title: 'Bookkeeping API'
+  description: 'Core Web configuration and structure API'
+  version: '1.0.0'
+  show_webby: false
+  path_segment_name_generator: 'api_platform.path_segment_name_generator.dash'
+  enable_swagger: true
+  enable_swagger_ui: true
+  enable_re_doc: true
+  enable_entrypoint: true
+  enable_docs: true
+  enable_profiler: true
+  doctrine:
+    enabled: false
+  doctrine_mongodb_odm:
+    enabled: true
+  oauth:
+    enabled: false
+  graphql:
+    enabled: true
+    default_ide: graphiql
+    graphiql:
+      enabled: true
+    graphql_playground:
+      enabled: false
