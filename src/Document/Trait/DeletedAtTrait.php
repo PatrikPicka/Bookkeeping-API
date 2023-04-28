@@ -11,7 +11,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 trait DeletedAtTrait
 {
-	#[ApiProperty(writable: false)]
+	#[ApiProperty()]
 	#[ODM\Field(type: 'date_immutable', nullable: true)]
 	protected DateTimeImmutable|null $deletedAt = null;
 

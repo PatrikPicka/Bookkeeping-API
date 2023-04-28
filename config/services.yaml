@@ -1,6 +1,8 @@
 parameters:
     mongodb_url: '%env(MONGODB_URL)%'
     mongodb_db: '%env(MONGODB_DB)%'
+    env(MONGODB_URL): ''
+    env(MONGODB_DB): ''
 
 services:
     _defaults:
