@@ -1,29 +1,28 @@
 <?php
 
-declare(strict_types = 1);
-
 namespace App\Document\Trait;
 
 use ApiPlatform\Metadata\ApiProperty;
 use App\Document\DocumentInterface;
+use App\Document\User;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-trait ActiveTrait
+trait NameTrait
 {
 	#[ApiProperty(writable: true)]
-	#[ODM\Field(type: 'bool', nullable: false)]
+	#[ODM\Field(type: 'string', nullable: false)]
 	#[Assert\NotBlank]
-	protected bool $active = false;
+	protected string $name;
 
-	public function isActive(): bool
+	public function getName(): string
 	{
-		return $this->active;
+		return $this->name;
 	}
 
-	public function setActive(bool $active): DocumentInterface
+	public function setName(string $name): DocumentInterface
 	{
-		$this->active = $active;
+		$this->name = $name;
 
 		return $this;
 	}

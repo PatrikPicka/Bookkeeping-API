@@ -1,2 +1,8 @@
 knpu_oauth2_client:
     clients:
+        google_main:
+            type: google
+            client_id: '%oauth_google_client_id%'
+            client_secret: '%oauth_google_secret%'
+            redirect_route: google_auth_check
+            redirect_params: {}

@@ -1,8 +1,8 @@
 parameters:
     mongodb_url: '%env(MONGODB_URL)%'
     mongodb_db: '%env(MONGODB_DB)%'
-    env(MONGODB_URL): ''
-    env(MONGODB_DB): ''
+    oauth_google_client_id: '%env(OAUTH_GOOGLE_CLIENT_ID)%'
+    oauth_google_secret: '%env(OAUTH_GOOGLE_SECRET)%'
 
 services:
     _defaults:

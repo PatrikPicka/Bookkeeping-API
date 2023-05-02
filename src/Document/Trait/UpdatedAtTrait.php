@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 trait UpdatedAtTrait
 {
-	#[ApiProperty]
+	#[ApiProperty(writable: true)]
 	#[ODM\Field(type: 'date_immutable', nullable: false)]
 	#[Assert\NotBlank]
 	protected DateTimeImmutable $updatedAt;
