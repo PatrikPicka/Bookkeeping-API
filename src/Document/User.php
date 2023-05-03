@@ -39,65 +39,49 @@ class User implements DocumentInterface, UserInterface
 	#[ODM\Field(type: 'int', nullable: false)]
 	#[Assert\NotBlank]
 	#[Assert\Unique]
-	protected string|null $authId;
-
-	#[ODM\EmbedMany(nullable: false, targetDocument: ApiToken::class)]
-	protected Collection $tokens;
+	protected int|null $authId;
 
 	#[ApiProperty(writable: true)]
-	#[ODM\EmbedMany(targetDocument: Role::class)]
-	protected Collection $roles;
+	#[ODM\ReferenceMany(storeAs: "id", targetDocument: Role::class)]
+	protected Collection $userRoles;
 
 	public function __construct()
 	{
-		$this->tokens = new ArrayCollection();
-		$this->roles = new ArrayCollection();
+		$this->userRoles = new ArrayCollection();
 	}
 
-	public function getAuthId(): ?string
+	public function getAuthId(): ?int
 	{
 		return $this->authId;
 	}
 
-	public function setAuthId(?string $authId): User
+	public function setAuthId(?int $authId): User
 	{
 		$this->authId = $authId;
 
 		return $this;
 	}
 
-	public function getTokens(): Collection
-	{
-		return $this->tokens;
-	}
-
-	public function setTokens(Collection $tokens): void
-	{
-		$this->tokens = $tokens;
-	}
-
-	public function addToken(ApiToken $token): void
-	{
-		$this->tokens->add($token);
-	}
-
-	public function setRoles(Collection $roles): void
-	{
-		$this->roles = $roles;
-	}
-
 	public function getRoles(): array
 	{
-		$roles = ['ROLE_USER'];
-
-		return array_merge($roles, array_map(function (Role $role): string {
+		return array_map(function (Role $role): string {
 			return $role->getName();
-		}, $this->roles->toArray()));
+		}, $this->userRoles->toArray());
 	}
 
-	public function addRole(Role $role): User
+	public function getUserRoles(): Collection
 	{
-		$this->roles->add($role);
+		return $this->userRoles;
+	}
+
+	public function setUserRoles(Collection $roles): void
+	{
+		$this->userRoles = $roles;
+	}
+
+	public function addUserRole(Role $role): User
+	{
+		$this->userRoles->add($role);
 
 		return $this;
 	}

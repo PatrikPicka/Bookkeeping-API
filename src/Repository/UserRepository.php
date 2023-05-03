@@ -13,7 +13,12 @@ class UserRepository extends DocumentRepository
 {
 	public function findByApiToken(string $apiToken): ?User
 	{
-		dd($this->dm->getRepository(ApiToken::class)->findOneBy(['token' => $apiToken])?->getUser());
-		return $this->dm->getRepository(ApiToken::class)->findOneBy(['token' => $apiToken])?->getUser();
+		$apiToken = $this->dm->getRepository(ApiToken::class)->findOneBy(['token' => $apiToken]);
+
+		if ($apiToken !== null) {
+			return $this->find($apiToken->getUserId());
+		}
+
+		return null;
 	}
 }

@@ -26,6 +26,8 @@ class Role implements DocumentInterface
 	use ActiveTrait;
 	use CUDTrait;
 
-	#[ODM\ReferenceMany(targetDocument: User::class, mappedBy: 'roles')]
-	protected array $users;
+	public function __toString(): string
+	{
+		return $this->getName();
+	}
 }
