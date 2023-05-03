@@ -19,7 +19,7 @@ security:
             custom_authenticator: App\Security\ApiTokenAuthenticator
 
     access_control:
-        - path: ^/,
+        - path: ^/api,
           roles: ROLE_API
         - path: ^/oauth
           roles: PUBLIC_ACCESS

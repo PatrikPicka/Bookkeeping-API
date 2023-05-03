@@ -27,7 +27,8 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 
 	public function supports(Request $request): ?bool
     {
-        return str_starts_with($request->getPathInfo(), '/api/');
+		//TODO: Dovytvořit systém práv uživatele aby tam měl přístup tehdy kdy se přihlásí přes OAUTH a nemusel tam vše dělat přes externí api
+        return !str_starts_with($request->getPathInfo(), '/api/graphql') && str_starts_with($request->getPathInfo(), '/api/');
     }
 
     public function authenticate(Request $request): Passport
