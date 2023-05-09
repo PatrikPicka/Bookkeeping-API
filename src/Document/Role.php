@@ -25,9 +25,4 @@ final class Role implements DocumentInterface
 	use NameTrait;
 	use ActiveTrait;
 	use CUDTrait;
-
-	public function __toString(): string
-	{
-		return $this->getName();
-	}
 }
