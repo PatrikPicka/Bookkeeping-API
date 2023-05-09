@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace App\Controller;
 
+use App\Constant\OAuthConstant;
+use App\Document\Role;
 use App\Document\User;
 use DateTimeImmutable;
 use Doctrine\ODM\MongoDB\DocumentManager;
@@ -86,11 +88,25 @@ class OAuthController extends AbstractController
 		]);
 
 		if ($user === null && $createIfNotFound) {
+			$role = $this->dm->getRepository(Role::class)->findOneBy(['name' => OAuthConstant::ROLE_USER]);
+
+			if ($role === null) {
+				$role = new Role();
+				$role->setName(OAuthConstant::ROLE_USER)
+					->setActive(true)
+					->setCreatedAt(new DateTimeImmutable())
+					->setUpdatedAt(new DateTimeImmutable());
+
+				$this->dm->persist($role);
+				$this->dm->flush();
+			}
+
 			$user = new User();
 			$user->setActive(true)
 				->setAuthId($resourceUser->getId())
 				->setEmail($resourceUser->getEmail())
 				->setName($resourceUser->getName())
+				->addUserRole($role)
 				->setCreatedAt(new DateTimeImmutable())
 				->setUpdatedAt(new DateTimeImmutable());
 
