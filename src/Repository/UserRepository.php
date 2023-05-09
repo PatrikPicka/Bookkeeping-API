@@ -16,7 +16,7 @@ class UserRepository extends DocumentRepository
 		$apiToken = $this->dm->getRepository(ApiToken::class)->findOneBy(['token' => $apiToken]);
 
 		if ($apiToken !== null) {
-			return $this->find($apiToken->getUserId());
+			return $apiToken->getUser();
 		}
 
 		return null;

@@ -19,7 +19,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 	],
 )]
 #[ODM\Document]
-class Role implements DocumentInterface
+final class Role implements DocumentInterface
 {
 	use IdTrait;
 	use NameTrait;

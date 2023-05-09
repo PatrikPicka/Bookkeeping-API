@@ -17,8 +17,8 @@ class ApiToken
 	#[ODM\Field(type: 'date_immutable', nullable: true)]
 	private DateTimeImmutable $expiresAt;
 
-	#[ODM\Field(type: 'string', nullable: false)]
-	private string $userId;
+	#[ODM\ReferenceOne(nullable: false, storeAs: 'id', targetDocument: User::class)]
+	private User $user;
 
 	public function getToken(): string
 	{
@@ -40,13 +40,13 @@ class ApiToken
 		$this->expiresAt = $expiresAt;
 	}
 
-	public function getUserId(): string
+	public function getUser(): User
 	{
-		return $this->userId;
+		return $this->user;
 	}
 
-	public function setUserId(string $userId): void
+	public function setUser(User $userId): void
 	{
-		$this->userId = $userId;
+		$this->user = $userId;
 	}
 }

@@ -4,9 +4,14 @@ declare(strict_types = 1);
 
 namespace App\Document;
 
+use ApiPlatform\Action\NotFoundAction;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\GraphQl\DeleteMutation;
+use ApiPlatform\Metadata\GraphQl\Mutation;
 use ApiPlatform\Metadata\GraphQl\Query;
+use ApiPlatform\Metadata\GraphQl\QueryCollection;
 use App\Document\Trait\ActiveTrait;
 use App\Document\Trait\CUDTrait;
 use App\Document\Trait\EmailTrait;
@@ -21,13 +26,19 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
-	security: "is_granted('ROLE_API')",
+	operations: [
+		new GetCollection(controller: NotFoundAction::class),
+	],
 	graphQlOperations: [
-		new Query(),
+		new Query(security: "(is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_USER_ADMIN')) or (is_granted('ROLE_USER') and object.id == user.id)"),
+		new QueryCollection(security: "is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_USER_ADMIN')"),
+		new DeleteMutation(security: "is_granted(['ROLE_SUPER_ADMIN', 'ROLE_USER_ADMIN'])", name: 'delete'),
+		new Mutation(security: "is_granted(['ROLE_SUPER_ADMIN', 'ROLE_USER_ADMIN'])", name: 'create'),
+		new Mutation(security: "is_granted(['ROLE_SUPER_ADMIN', 'ROLE_USER_ADMIN']) or (is_granted('ROLE_USER') and object.owner == user)", name: 'update'),
 	],
 )]
 #[ODM\Document(repositoryClass: UserRepository::class)]
-class User implements DocumentInterface, UserInterface
+final class User implements DocumentInterface, UserInterface
 {
 	use IdTrait;
 	use CUDTrait;
@@ -42,8 +53,12 @@ class User implements DocumentInterface, UserInterface
 	protected int|null $authId;
 
 	#[ApiProperty(writable: true)]
-	#[ODM\ReferenceMany(storeAs: "id", targetDocument: Role::class)]
+	#[ODM\ReferenceMany(storeAs: 'id', targetDocument: Role::class)]
 	protected Collection $userRoles;
+
+	#[ApiProperty(writable: true)]
+	#[ODM\ReferenceMany(storeAs: 'id', targetDocument: UserCryptocurrency::class, cascade: ['persist'])]
+	protected Collection $userCryptocurrencies;
 
 	public function __construct()
 	{
