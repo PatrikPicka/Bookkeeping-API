@@ -14,7 +14,6 @@ trait CreatedAtTrait
 {
 	#[ApiProperty(writable: false)]
 	#[ODM\Field(type: 'date_immutable', nullable: false)]
-	#[Assert\NotBlank]
 	protected DateTimeImmutable $createdAt;
 
 	public function getCreatedAt(): DateTimeImmutable

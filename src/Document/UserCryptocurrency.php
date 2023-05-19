@@ -12,7 +12,6 @@ use ApiPlatform\Metadata\GraphQl\Query;
 use ApiPlatform\Metadata\GraphQl\QueryCollection;
 use App\Document\Trait\CUDTrait;
 use App\Document\Trait\IdTrait;
-use App\Repository\UserRepository;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 #[ApiResource(
@@ -22,13 +21,13 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 	graphQlOperations: [
 		new Query(security: "(is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_USER_ADMIN')) or (is_granted('ROLE_USER') and object.user.id == user.id)"),
 		new QueryCollection(security: "(is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_USER_ADMIN')) or (is_granted('ROLE_USER') and object.user.id == user.id)"),
-		new DeleteMutation(security: "is_granted(['ROLE_SUPER_ADMIN', 'ROLE_USER_ADMIN'])or (is_granted('ROLE_USER') and object.user.id == user.id)", name: 'delete'),
-		new Mutation(security: "is_granted(['ROLE_SUPER_ADMIN', 'ROLE_USER_ADMIN'])or (is_granted('ROLE_USER') and object.user.id == user.id)", name: 'create'),
-		new Mutation(security: "is_granted(['ROLE_SUPER_ADMIN', 'ROLE_USER_ADMIN']) or (is_granted('ROLE_USER') and object.user.id == user)", name: 'update'),
+		new DeleteMutation(security: "is_granted(['ROLE_SUPER_ADMIN', 'ROLE_USER_ADMIN']) or (is_granted('ROLE_USER') and object.user.id == user.id)", name: 'delete'),
+		new Mutation(security: "is_granted(['ROLE_SUPER_ADMIN', 'ROLE_USER_ADMIN']) or (is_granted('ROLE_USER') and object.user.id == user.id)", name: 'create'),
+		new Mutation(security: "is_granted(['ROLE_SUPER_ADMIN', 'ROLE_USER_ADMIN']) or (is_granted('ROLE_USER') and object.user.id == user.id)", name: 'update'),
 	],
 )]
 #[ODM\Document]
-final class UserCryptocurrency
+class UserCryptocurrency
 {
 	use IdTrait;
 	use CUDTrait;
@@ -36,6 +35,10 @@ final class UserCryptocurrency
 	#[ApiProperty(writable: true)]
 	#[ODM\Field(type: 'string', nullable: 'false')]
 	protected string $cryptocurrencyIdentifier;
+
+	#[ApiProperty(writable: true)]
+	#[ODM\Field(type: 'float', nullable: false, options: ['default' => 0])]
+	protected float $amountHeld;
 
 	#[ApiProperty(writable: false)]
 	#[ODM\ReferenceOne(nullable: false, storeAs: "id", targetDocument: User::class)]
@@ -49,6 +52,16 @@ final class UserCryptocurrency
 	public function setCryptoIdentifier(string $cryptoIdentifier): void
 	{
 		$this->cryptoIdentifier = $cryptoIdentifier;
+	}
+
+	public function getAmountHeld(): float
+	{
+		return $this->amountHeld;
+	}
+
+	public function setAmountHeld(float $amountHeld): void
+	{
+		$this->amountHeld = $amountHeld;
 	}
 
 	public function getUser(): User

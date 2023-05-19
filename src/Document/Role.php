@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace App\Document;
 
+use ApiPlatform\Action\NotFoundAction;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\GraphQl\Query;
 use App\Document\Trait\ActiveTrait;
 use App\Document\Trait\CUDTrait;
@@ -13,13 +15,15 @@ use App\Document\Trait\NameTrait;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 #[ApiResource(
-	security: "is_granted('ROLE_API')",
+	operations: [
+		new GetCollection(controller: NotFoundAction::class),
+	],
 	graphQlOperations: [
 		new Query(),
 	],
 )]
 #[ODM\Document]
-final class Role implements DocumentInterface
+class Role implements DocumentInterface
 {
 	use IdTrait;
 	use NameTrait;

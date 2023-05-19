@@ -38,7 +38,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 	],
 )]
 #[ODM\Document(repositoryClass: UserRepository::class)]
-final class User implements DocumentInterface, UserInterface
+class User implements DocumentInterface, UserInterface
 {
 	use IdTrait;
 	use CUDTrait;

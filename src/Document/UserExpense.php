@@ -11,6 +11,7 @@ use ApiPlatform\Metadata\GraphQl\Mutation;
 use ApiPlatform\Metadata\GraphQl\Query;
 use ApiPlatform\Metadata\GraphQl\QueryCollection;
 use App\Document\Superclass\IncomeAndExpenseSuperclass;
+use App\Resolver\UserExpenseMutationResolver;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 #[ApiResource(
@@ -20,17 +21,25 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 	graphQlOperations: [
 		new Query(security: "(is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_USER_ADMIN')) or (is_granted('ROLE_USER') and object.userExpenseGroup.user.id == user.id)"),
 		new QueryCollection(security: "(is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_USER_ADMIN')) or (is_granted('ROLE_USER') and object.user.id == user.id)"),
-		new DeleteMutation(security: "is_granted(['ROLE_SUPER_ADMIN', 'ROLE_USER_ADMIN'])or (is_granted('ROLE_USER') and object.user.id == user.id)", name: 'delete'),
-		new Mutation(security: "is_granted(['ROLE_SUPER_ADMIN', 'ROLE_USER_ADMIN'])or (is_granted('ROLE_USER') and object.user.id == user.id)", name: 'create'),
-		new Mutation(security: "is_granted(['ROLE_SUPER_ADMIN', 'ROLE_USER_ADMIN']) or (is_granted('ROLE_USER') and object.user.id == user)", name: 'update'),
+		new DeleteMutation(security: "is_granted(['ROLE_SUPER_ADMIN', 'ROLE_USER_ADMIN']) or (is_granted('ROLE_USER') and object.user.id == user.id)", name: 'delete'),
+		new Mutation(
+			resolver: UserExpenseMutationResolver::class,
+			security: "is_granted(['ROLE_SUPER_ADMIN', 'ROLE_USER_ADMIN']) or (is_granted('ROLE_USER') and object.user.id == user.id)",
+			name: 'create',
+		),
+		new Mutation(security: "is_granted(['ROLE_SUPER_ADMIN', 'ROLE_USER_ADMIN']) or (is_granted('ROLE_USER') and object.user.id == user.id)", name: 'update'),
 	],
 )]
 #[ODM\Document]
-final class UserExpense extends IncomeAndExpenseSuperclass
+class UserExpense extends IncomeAndExpenseSuperclass
 {
 	#[ApiProperty(writable: true)]
 	#[ODM\ReferenceOne(nullable: false, storeAs: "id", targetDocument: UserExpenseGroup::class)]
 	protected UserExpenseGroup $userExpenseGroup;
+
+	#[ApiProperty(writable: true)]
+	#[ODM\ReferenceOne(nullable: false, storeAs: "id", targetDocument: UserAccount::class)]
+	protected UserAccount $userAccount;
 
 	public function getUserExpenseGroup(): UserExpenseGroup
 	{
@@ -40,5 +49,15 @@ final class UserExpense extends IncomeAndExpenseSuperclass
 	public function setUserExpenseGroup(UserExpenseGroup $userExpenseGroup): void
 	{
 		$this->userExpenseGroup = $userExpenseGroup;
+	}
+
+	public function getUserAccount(): UserAccount
+	{
+		return $this->userAccount;
+	}
+
+	public function setUserAccount(UserAccount $userAccount): void
+	{
+		$this->userAccount = $userAccount;
 	}
 }
