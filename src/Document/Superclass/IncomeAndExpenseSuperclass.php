@@ -3,6 +3,7 @@
 namespace App\Document\Superclass;
 
 use ApiPlatform\Metadata\ApiProperty;
+use App\Document\DocumentInterface;
 use App\Document\Trait\CUDTrait;
 use App\Document\Trait\DateTrait;
 use App\Document\Trait\IdTrait;
@@ -11,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ODM\Document]
 #[ODM\InheritanceType('COLLECTION_PER_CLASS')]
-abstract class IncomeAndExpenseSuperclass
+abstract class IncomeAndExpenseSuperclass implements DocumentInterface
 {
 	use IdTrait;
 	use CUDTrait;

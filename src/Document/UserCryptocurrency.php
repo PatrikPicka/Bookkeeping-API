@@ -27,7 +27,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 	],
 )]
 #[ODM\Document]
-class UserCryptocurrency
+class UserCryptocurrency implements DocumentInterface
 {
 	use IdTrait;
 	use CUDTrait;
