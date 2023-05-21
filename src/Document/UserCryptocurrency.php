@@ -44,14 +44,14 @@ class UserCryptocurrency
 	#[ODM\ReferenceOne(nullable: false, storeAs: "id", targetDocument: User::class)]
 	protected User $user;
 
-	public function getCryptoIdentifier(): string
+	public function getCryptocurrencyIdentifier(): string
 	{
-		return $this->cryptoIdentifier;
+		return $this->cryptocurrencyIdentifier;
 	}
 
-	public function setCryptoIdentifier(string $cryptoIdentifier): void
+	public function setCryptocurrencyIdentifier(string $cryptocurrencyIdentifier): void
 	{
-		$this->cryptoIdentifier = $cryptoIdentifier;
+		$this->cryptocurrencyIdentifier = $cryptocurrencyIdentifier;
 	}
 
 	public function getAmountHeld(): float
