@@ -15,9 +15,7 @@ class WriteStage implements WriteStageInterface
 
 	public function __construct(
 		private readonly WriteStageInterface $writeStage,
-	)
-	{
-	}
+	){}
 
 	public function __invoke(?object $data, string $resourceClass, Operation $operation, array $context): ?object
 	{

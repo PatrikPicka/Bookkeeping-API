@@ -65,7 +65,7 @@ class OAuthController extends AbstractController
 		if ($user === null) {
 			$session->remove(static::CONTINUE_SESSION_NAME);
 
-			return $this->redirectToRoute('app_mdauth', [
+			return $this->redirectToRoute('google_auth_login', [
 				'error' => 'error_inactive_account',
 			]);
 		}

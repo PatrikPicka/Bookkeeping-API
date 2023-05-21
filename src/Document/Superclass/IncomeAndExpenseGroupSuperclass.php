@@ -3,6 +3,7 @@
 namespace App\Document\Superclass;
 
 use ApiPlatform\Metadata\ApiProperty;
+use App\Document\DocumentInterface;
 use App\Document\Trait\CUDTrait;
 use App\Document\Trait\IdTrait;
 use App\Document\Trait\NameTrait;
@@ -11,17 +12,17 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 #[ODM\Document]
 #[ODM\InheritanceType('COLLECTION_PER_CLASS')]
-abstract class IncomeAndExpenseGroupSuperclass
+abstract class IncomeAndExpenseGroupSuperclass implements DocumentInterface
 {
 	use IdTrait;
 	use NameTrait;
 	use CUDTrait;
 
-	#[ApiProperty(writable: false)]
+	#[ApiProperty(writable: true)]
 	#[ODM\Field(type: 'string', nullable: false, options: ['default' => '#ffffff'])]
 	protected string $color;
 
-	#[ApiProperty(writable: false)]
+	#[ApiProperty(writable: true)]
 	#[ODM\ReferenceOne(nullable: false, storeAs: "id", targetDocument: User::class)]
 	protected User $user;
 

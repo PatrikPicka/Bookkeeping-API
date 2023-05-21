@@ -34,7 +34,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 		new QueryCollection(security: "is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_USER_ADMIN')"),
 		new DeleteMutation(security: "is_granted(['ROLE_SUPER_ADMIN', 'ROLE_USER_ADMIN'])", name: 'delete'),
 		new Mutation(security: "is_granted(['ROLE_SUPER_ADMIN', 'ROLE_USER_ADMIN'])", name: 'create'),
-		new Mutation(security: "is_granted(['ROLE_SUPER_ADMIN', 'ROLE_USER_ADMIN']) or (is_granted('ROLE_USER') and object.owner == user)", name: 'update'),
+		new Mutation(security: "is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_USER_ADMIN') or (is_granted('ROLE_USER') and object.owner == user)", name: 'update'),
 	],
 )]
 #[ODM\Document(repositoryClass: UserRepository::class)]
