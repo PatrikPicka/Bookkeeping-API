@@ -27,8 +27,8 @@ class UserIncomeAndExpenseMutationResolver implements MutationResolverInterface
 		switch ($contextFieldDefinition->getName()) {
 			case 'create' . $className:
 				$account = $item->getUserAccount();
-				$accountBalance = $account->getBalance;
-				$account->setBalance($accountBalance + ($item->amount * $multiplier));
+				$accountBalance = $account->getBalance();
+				$account->setBalance($accountBalance + ($item->getAmount() * $multiplier));
 
 				$this->dm->persist($account);
 				break;
@@ -39,7 +39,7 @@ class UserIncomeAndExpenseMutationResolver implements MutationResolverInterface
 				$difference = $item->getAmount() - $previousAmount;
 
 				$account = $item->getUserAccount();
-				$accountBalance = $account->getBalance;
+				$accountBalance = $account->getBalance();
 				$account->setBalance($accountBalance + ($difference * $multiplier));
 
 				$this->dm->persist($account);
@@ -47,7 +47,7 @@ class UserIncomeAndExpenseMutationResolver implements MutationResolverInterface
 
 			case 'delete' . $className:
 				$account = $item->getUserAccount();
-				$accountBalance = $account->getBalance;
+				$accountBalance = $account->getBalance();
 				$account->setBalance($accountBalance + ($item->getAmount() * -$multiplier));
 
 				$this->dm->persist($account);
