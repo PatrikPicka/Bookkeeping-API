@@ -84,7 +84,7 @@ class OAuthController extends AbstractController
 		$userRepository = $this->dm->getRepository(User::class);
 
 		$user = $userRepository->findOneBy([
-			'authId' => $resourceUser->getId(),
+			'email' => $resourceUser->getEmail(),
 		]);
 
 		if ($user === null && $createIfNotFound) {

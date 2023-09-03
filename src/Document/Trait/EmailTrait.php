@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 trait EmailTrait
 {
-	#[ApiProperty(writable: true)]
+	#[ApiProperty(readable: true, writable: true)]
 	#[ODM\Field(type: 'string', nullable: false)]
 	#[Assert\NotBlank]
 	#[Assert\Unique]

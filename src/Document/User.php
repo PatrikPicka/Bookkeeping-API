@@ -23,7 +23,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
 	operations: [
@@ -46,12 +45,6 @@ class User implements DocumentInterface, UserInterface
 	use EmailTrait;
 	use NameTrait;
 
-	#[ApiProperty(writable: false)]
-	#[ODM\Field(type: 'int', nullable: false)]
-	#[Assert\NotBlank]
-	#[Assert\Unique]
-	protected int|null $authId;
-
 	#[ApiProperty(writable: true)]
 	#[ODM\ReferenceMany(storeAs: 'id', targetDocument: Role::class)]
 	protected Collection $userRoles;
@@ -63,18 +56,7 @@ class User implements DocumentInterface, UserInterface
 	public function __construct()
 	{
 		$this->userRoles = new ArrayCollection();
-	}
-
-	public function getAuthId(): ?int
-	{
-		return $this->authId;
-	}
-
-	public function setAuthId(?int $authId): User
-	{
-		$this->authId = $authId;
-
-		return $this;
+		$this->userCryptocurrencies = new ArrayCollection();
 	}
 
 	public function getRoles(): array

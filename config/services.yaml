@@ -18,3 +18,9 @@ services:
 
     App\Stage\WriteStage:
         decorates: api_platform.graphql.resolver.stage.write
+
+    App\Security\ApiSecretLoginAuthenticator:
+        arguments:
+            - '@doctrine_mongodb.odm.default_document_manager'
+            - '%env(X_API_SECRET)%'
+            - '@lexik_jwt_authentication.handler.authentication_success'
