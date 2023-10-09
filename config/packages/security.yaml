@@ -26,6 +26,8 @@ security:
       stateless: true
       provider: app_user_provider
       jwt: ~
+      custom_authenticators:
+          - App\Security\OauthSuperAdminAuthenticator
 
   access_control:
     - { path: ^/api/login, roles: PUBLIC_ACCESS }

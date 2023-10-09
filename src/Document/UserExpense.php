@@ -42,19 +42,19 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 class UserExpense extends IncomeAndExpenseSuperclass
 {
 	#[ApiProperty(writable: true)]
-	#[ODM\ReferenceOne(nullable: false, storeAs: "id", targetDocument: UserExpenseGroup::class)]
-	protected UserExpenseGroup $userExpenseGroup;
+	#[ODM\ReferenceOne(nullable: false, storeAs: "id", targetDocument: UserIncomeAndExpenseGroup::class)]
+	protected UserIncomeAndExpenseGroup $userExpenseGroup;
 
 	#[ApiProperty(writable: true)]
 	#[ODM\ReferenceOne(nullable: false, storeAs: "id", targetDocument: UserAccount::class)]
 	protected UserAccount $userAccount;
 
-	public function getUserExpenseGroup(): UserExpenseGroup
+	public function getUserExpenseGroup(): UserIncomeAndExpenseGroup
 	{
 		return $this->userExpenseGroup;
 	}
 
-	public function setUserExpenseGroup(UserExpenseGroup $userExpenseGroup): void
+	public function setUserExpenseGroup(UserIncomeAndExpenseGroup $userExpenseGroup): void
 	{
 		$this->userExpenseGroup = $userExpenseGroup;
 	}

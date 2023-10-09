@@ -3,13 +3,12 @@
 namespace App\Security;
 
 use App\Constant\RoleConstant;
+use App\Constant\SecurityConstant;
 use App\Document\Role;
 use App\Document\User;
 use DateTimeImmutable;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Exception;
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
 use Google_Client;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\InvalidPayloadException;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
@@ -28,8 +27,6 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
 
 class ApiSecretLoginAuthenticator extends AbstractAuthenticator
 {
-	const API_AUTH_HEADER_NAME = 'x-api-secret';
-
 	public function __construct(
 		private readonly DocumentManager $dm,
 		private readonly string $apiToken,
@@ -39,12 +36,12 @@ class ApiSecretLoginAuthenticator extends AbstractAuthenticator
 
 	public function supports(Request $request): ?bool
 	{
-		return str_starts_with($request->getPathInfo(), '/api/login')   ;
+		return str_starts_with($request->getPathInfo(), '/api/login');
 	}
 
 	public function authenticate(Request $request): Passport
 	{
-		$apiToken = $request->headers->get(key: self::API_AUTH_HEADER_NAME);
+		$apiToken = $request->headers->get(key: SecurityConstant::API_AUTH_HEADER_NAME);
 
 		if (empty($apiToken)) {
 			throw new CustomUserMessageAuthenticationException(message: 'No API secret provided');

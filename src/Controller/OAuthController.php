@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace App\Controller;
 
 use App\Constant\OAuthConstant;
+use App\Constant\SecurityConstant;
 use App\Document\Role;
 use App\Document\User;
 use DateTimeImmutable;
@@ -122,7 +123,7 @@ class OAuthController extends AbstractController
 		$token = new PreAuthenticatedToken($user, 'main', $user->getRoles());
 
 		$this->tokenStorage->setToken($token);
-		$session->set('_security_primary_auth', serialize($token));
+		$session->set(SecurityConstant::OAUTH_SESSION_NAME, serialize($token));
 		$session->save();
 
 		$event = new InteractiveLoginEvent($request, $token);
