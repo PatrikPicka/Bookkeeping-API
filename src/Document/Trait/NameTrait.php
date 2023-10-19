@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 trait NameTrait
 {
-	#[ApiProperty(writable: true)]
+	#[ApiProperty(readable: true, writable: true)]
 	#[ODM\Field(type: 'string', nullable: false)]
 	#[Assert\NotBlank]
 	protected string $name;

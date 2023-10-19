@@ -4,9 +4,6 @@ namespace App\Security;
 
 use App\Constant\RoleConstant;
 use App\Constant\SecurityConstant;
-use Cassandra\Exception\UnauthorizedException;
-use Doctrine\ODM\MongoDB\DocumentManager;
-use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
@@ -33,7 +30,7 @@ class OauthSuperAdminAuthenticator extends AbstractAuthenticator
 		}
 
 		/** @var PreAuthenticatedToken $preAuthenticatedToken */
-		$preAuthenticatedToken = unserialize($request->getSession()->get('_security_primary_auth'));
+		$preAuthenticatedToken = unserialize($request->getSession()->get(SecurityConstant::OAUTH_SESSION_NAME));
 
 		if (!in_array(RoleConstant::ROLE_SUPER_ADMIN, $preAuthenticatedToken->getRoleNames())) {
 			throw new CustomUserMessageAuthenticationException('You don\'t have permissions for this page.');
