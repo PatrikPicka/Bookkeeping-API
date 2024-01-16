@@ -114,7 +114,7 @@ class ApiSecretLoginAuthenticator extends AbstractAuthenticator
 						->findOneBy(['name' => RoleConstant::ROLE_USER])
 				)
 				->setCreatedAt(new DateTimeImmutable())
-				->setUpdateddAt(new DateTimeImmutable());
+				->setUpdatedAt(new DateTimeImmutable());
 
 			$this->dm->persist($user);
 			$this->dm->flush();

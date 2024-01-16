@@ -80,7 +80,7 @@ class OAuthController extends AbstractController
 		return $this->redirect($continue ?? '/api');
 	}
 
-	private function getUserFromResourceUser(ResourceOwnerInterface $resourceUser, bool $createIfNotFound = true): ?User
+	private function getUserFromResourceUser(ResourceOwnerInterface $resourceUser, bool $createIfNotFound = false): ?User
 	{
 		$userRepository = $this->dm->getRepository(User::class);
 
