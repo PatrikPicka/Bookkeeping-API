@@ -22,7 +22,7 @@ security:
           - App\Security\ApiSecretLoginAuthenticator
 
     api:
-      pattern: ^/
+      pattern: ^/api
       stateless: true
       provider: app_user_provider
       jwt: ~

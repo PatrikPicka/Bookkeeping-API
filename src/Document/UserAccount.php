@@ -42,6 +42,10 @@ class UserAccount implements DocumentInterface
 	#[ODM\ReferenceOne(nullable: false, storeAs: "id", targetDocument: User::class)]
 	protected User $user;
 
+	#[ApiProperty(writable: true)]
+	#[ODM\ReferenceOne(nullable: false, storeAs: "id", targetDocument: Currency::class)]
+	protected Currency $currency;
+
 	public function getBalance(): float
 	{
 		return $this->balance;
@@ -60,5 +64,21 @@ class UserAccount implements DocumentInterface
 	public function setUser(User $user): void
 	{
 		$this->user = $user;
+	}
+
+	/**
+	 * @return Currency
+	 */
+	public function getCurrency(): Currency
+	{
+		return $this->currency;
+	}
+
+	/**
+	 * @param Currency $currency
+	 */
+	public function setCurrency(Currency $currency): void
+	{
+		$this->currency = $currency;
 	}
 }

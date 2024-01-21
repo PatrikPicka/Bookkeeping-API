@@ -104,7 +104,6 @@ class OAuthController extends AbstractController
 
 			$user = new User();
 			$user->setActive(true)
-				->setAuthId($resourceUser->getId())
 				->setEmail($resourceUser->getEmail())
 				->setName($resourceUser->getName())
 				->addUserRole($role)

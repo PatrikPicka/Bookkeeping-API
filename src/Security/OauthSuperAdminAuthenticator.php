@@ -4,9 +4,9 @@ namespace App\Security;
 
 use App\Constant\RoleConstant;
 use App\Constant\SecurityConstant;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\PreAuthenticatedToken;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -20,13 +20,15 @@ class OauthSuperAdminAuthenticator extends AbstractAuthenticator
 {
 	public function supports(Request $request): ?bool
 	{
-		return !$request->headers->has(SecurityConstant::API_AUTH_HEADER_NAME) && !str_starts_with($request->getPathInfo(), '/oauth');
+		return
+			!$request->headers->has(SecurityConstant::API_AUTH_HEADER_NAME) &&
+			!str_starts_with($request->getPathInfo(), '/oauth');
 	}
 
 	public function authenticate(Request $request): Passport
 	{
 		if (!$request->getSession()->has(SecurityConstant::OAUTH_SESSION_NAME)) {
-			throw new UnauthorizedHttpException('You have to be logged in to get acces to this app.');
+			throw new AuthenticationException('You have to be logged in to get acces to this app.');
 		}
 
 		/** @var PreAuthenticatedToken $preAuthenticatedToken */
@@ -47,7 +49,7 @@ class OauthSuperAdminAuthenticator extends AbstractAuthenticator
 	public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
 	{
 		$data = [
-			'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
+			'message' => strtr($exception->getMessageKey(), $exception->getMessageData()),
 		];
 
 		return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
